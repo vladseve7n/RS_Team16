@@ -9,7 +9,10 @@ security = HTTPBearer()
 
 SECRET_KEY = os.getenv('SECRET_KEY', '000000')
 
-async def has_access(credentials: HTTPAuthorizationCredentials = Depends(security)):
+
+async def has_access(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+) -> None:
     token = credentials.credentials
     if token == SECRET_KEY:
         return None
