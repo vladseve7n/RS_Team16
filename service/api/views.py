@@ -65,7 +65,7 @@ async def get_reco(
         raise ModelNotFoundError(
             error_message=f'There is no model with name {model_name}')
 
-    model.preparing()
+    model.prepare()
     reco = model.get_answer(user_id=user_id,
                             k_recs=k_recs)
     return RecoResponse(user_id=user_id, items=reco)
