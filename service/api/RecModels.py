@@ -1,6 +1,6 @@
+import random
 from abc import ABC, abstractmethod
 from typing import Dict, List, Type
-import random
 
 
 class RecModel(ABC):
