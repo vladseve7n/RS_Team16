@@ -53,17 +53,18 @@ async def get_reco(
     user_id: int = Path(..., description='The specific id of user'),
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
-    print(authorization)
-
-    if model_name not in all_models:
-        raise ModelNotFoundError(
-            error_message=f'There is no model with name {model_name}')
 
     if user_id > 10 ** 9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
     k_recs = request.app.state.k_recs
-    model = all_models[model_name]()
+
+    try:
+        model = all_models[model_name]()
+    except KeyError:
+        raise ModelNotFoundError(
+            error_message=f'There is no model with name {model_name}')
+
     model.preparing()
     reco = model.get_answer(user_id=user_id,
                             k_recs=k_recs)
