@@ -66,11 +66,9 @@ async def get_reco(
             error_message=f'There is no model with name {model_name}')
 
     model.prepare()
-    reco = model.get_answer(user_id=user_id,
-                            k_recs=k_recs)
+    reco = model.get_answer(user_id=user_id, k_recs=k_recs)
     return RecoResponse(user_id=user_id, items=reco)
 
 
 def add_views(app: FastAPI) -> None:
-    app.include_router(router,
-                       dependencies=PROTECTED)
+    app.include_router(router, dependencies=PROTECTED)
