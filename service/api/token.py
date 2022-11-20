@@ -16,5 +16,4 @@ async def has_access(
     token = credentials.credentials
     if token == SECRET_KEY:
         return None
-    else:
-        raise NonAuthorizedError()
+    raise NonAuthorizedError()
