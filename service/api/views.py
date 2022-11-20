@@ -3,8 +3,8 @@ from typing import List, Optional, Sequence
 from fastapi import APIRouter, Depends, FastAPI, Request, Path, Header
 from pydantic import BaseModel
 
-from service.api.RecModels import all_models
 from service.api.exceptions import ModelNotFoundError, UserNotFoundError
+from service.api.rec_models import all_models
 from service.api.token import has_access
 from service.log import app_logger
 
