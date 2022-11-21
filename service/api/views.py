@@ -8,6 +8,8 @@ from service.api.token import has_access
 from service.log import app_logger
 from service.api.RecModels import all_models
 
+from models import Error
+
 PROTECTED = [Depends(has_access)]
 
 
@@ -16,14 +18,9 @@ class RecoResponse(BaseModel):
     items: List[int]
 
 
-class ErrorObject(BaseModel):
-    error_key: str
-    error_message: str
-    error_loc: Optional[Sequence[str]]
-
 
 class ErrorResponse(BaseModel):
-    errors: List[ErrorObject]
+    errors: List[Error]
 
 
 router = APIRouter()
@@ -32,8 +29,6 @@ router = APIRouter()
 @router.get(
     path="/health",
     tags=["Health"],
-    response_model=str,
-    responses={401: {'model': ErrorResponse}}
 )
 async def health() -> str:
     return "I am alive"
