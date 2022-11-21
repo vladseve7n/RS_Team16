@@ -11,7 +11,10 @@ def test_health(
     client: TestClient,
 ) -> None:
     with client:
-        response = client.get("/health")
+        headers = {
+            'Authorization': 'Bearer 000000'
+        }
+        response = client.get("/health", headers=headers)
     assert response.status_code == HTTPStatus.OK
 
 
@@ -20,9 +23,12 @@ def test_get_reco_success(
     service_config: ServiceConfig,
 ) -> None:
     user_id = 123
-    path = GET_RECO_PATH.format(model_name="some_model", user_id=user_id)
+    path = GET_RECO_PATH.format(model_name="random_model", user_id=user_id)
     with client:
-        response = client.get(path)
+        headers = {
+            'Authorization': 'Bearer 000000'
+        }
+        response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.OK
     response_json = response.json()
     assert response_json["user_id"] == user_id
@@ -34,11 +40,15 @@ def test_get_reco_for_unknown_user(
     client: TestClient,
 ) -> None:
     user_id = 10**10
-    path = GET_RECO_PATH.format(model_name="some_model", user_id=user_id)
+    path = GET_RECO_PATH.format(model_name="random_model", user_id=user_id)
     with client:
-        response = client.get(path)
+        headers = {
+            'Authorization': 'Bearer 000000'
+        }
+        response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json()["errors"][0]["error_key"] == "user_not_found"
+
 
 def test_get_reco_for_unknow_model(
     client: TestClient,
@@ -46,6 +56,10 @@ def test_get_reco_for_unknow_model(
     user_id = 123
     path = GET_RECO_PATH.format(model_name="unknow_model", user_id=user_id)
     with client:
-        response = client.get(path)
+        headers = {
+            'Authorization': 'Bearer 000000'
+        }
+        response = client.get(path, headers=headers)
+        print(response)
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json()["errors"][0]["error_key"] == "model_name_not_found"

@@ -1,6 +1,6 @@
+import random
 from abc import ABC, abstractmethod
 from typing import Dict, List, Type
-import random
 
 
 class RecModel(ABC):
@@ -8,7 +8,7 @@ class RecModel(ABC):
         pass
 
     @abstractmethod
-    def preparing(self, *args, **kwargs) -> None:
+    def prepare(self, *args, **kwargs) -> None:
         pass
 
     @abstractmethod
@@ -17,7 +17,7 @@ class RecModel(ABC):
 
 
 class RandomModel(RecModel):
-    def preparing(self, *args, **kwargs) -> None:
+    def prepare(self, *args, **kwargs) -> None:
         pass
 
     def get_answer(self, *args, **kwargs) -> List[int]:
