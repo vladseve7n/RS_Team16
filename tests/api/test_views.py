@@ -60,6 +60,19 @@ def test_get_reco_for_unknow_model(
             'Authorization': 'Bearer 000000'
         }
         response = client.get(path, headers=headers)
-        print(response)
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json()["errors"][0]["error_key"] == "model_name_not_found"
+
+
+def test_get_reco_for_unauthtorize(
+    client: TestClient,
+) -> None:
+    user_id = 123
+    path = GET_RECO_PATH.format(model_name="unknow_model", user_id=user_id)
+    with client:
+        headers = {
+            'Authorization': 'Bearer 8888ffff8'
+        }
+        response = client.get(path, headers=headers)
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert response.json()["errors"][0]["error_key"] == "unauthorized"
