@@ -1,13 +1,13 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, FastAPI, Header, Path, Request
-from service.models import Error
 from pydantic import BaseModel
 
 from service.api.exceptions import ModelNotFoundError, UserNotFoundError
 from service.api.rec_models import all_models
 from service.api.token import has_access
 from service.log import app_logger
+from service.models import Error
 
 PROTECTED = [Depends(has_access)]
 
