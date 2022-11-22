@@ -17,7 +17,13 @@ class RecoResponse(BaseModel):
     items: List[int]
 
 
-class ErrorResponse(BaseModel):
+class Error401Response(BaseModel):
+    error: str = 'Unauthorized. No permission'
+    errors: List[Error]
+
+
+class Error404Response(BaseModel):
+    error: str = 'Not Found. Nothing matches the given URI'
     errors: List[Error]
 
 
@@ -37,12 +43,11 @@ async def health() -> str:
     path="/reco/{model_name}/{user_id}",
     tags=["Recommendations"],
     response_model=RecoResponse,
-    responses={404: {'model': ErrorResponse},
-               401: {'model': ErrorResponse}}
+    responses={404: {'model': Error404Response},
+               401: {'model': Error401Response}}
 )
 async def get_reco(
         request: Request,
-        authorization: str = Header(..., description='The bearer token'),
         model_name: str = Path(..., description='The name of testing model'),
         user_id: int = Path(..., description='The specific id of user'),
 ) -> RecoResponse:
