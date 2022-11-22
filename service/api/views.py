@@ -1,7 +1,7 @@
-from typing import List, Optional, Sequence
+from typing import List
 
 from fastapi import APIRouter, Depends, FastAPI, Header, Path, Request
-from models import Error
+from service.models import Error
 from pydantic import BaseModel
 
 from service.api.exceptions import ModelNotFoundError, UserNotFoundError
@@ -17,15 +17,15 @@ class RecoResponse(BaseModel):
     items: List[int]
 
 
-
 class ErrorResponse(BaseModel):
     errors: List[Error]
 
 
 router = APIRouter()
+router_no_auth = APIRouter()
 
 
-@router.get(
+@router_no_auth.get(
     path="/health",
     tags=["Health"],
 )
@@ -41,10 +41,10 @@ async def health() -> str:
                401: {'model': ErrorResponse}}
 )
 async def get_reco(
-    request: Request,
-    authorization: str = Header(..., description='The bearer token'),
-    model_name: str = Path(..., description='The name of testing model'),
-    user_id: int = Path(..., description='The specific id of user'),
+        request: Request,
+        authorization: str = Header(..., description='The bearer token'),
+        model_name: str = Path(..., description='The name of testing model'),
+        user_id: int = Path(..., description='The specific id of user'),
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
@@ -65,4 +65,5 @@ async def get_reco(
 
 
 def add_views(app: FastAPI) -> None:
+    app.include_router(router_no_auth)
     app.include_router(router, dependencies=PROTECTED)
