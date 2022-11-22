@@ -12,17 +12,17 @@ class RecModel(ABC):
         pass
 
     @abstractmethod
-    def get_answer(self, *args, **kwargs) -> List[int]:
-        return list(range(kwargs['k_recs']))
+    def get_reco_for_user(self, user_id: int, k_recs: int, **kwargs) -> List[int]:
+        return list(range(k_recs))
 
 
 class RandomModel(RecModel):
     def prepare(self, *args, **kwargs) -> None:
         pass
 
-    def get_answer(self, *args, **kwargs) -> List[int]:
-        random.seed(kwargs['user_id'])
-        return random.sample(range(0, 256), kwargs['k_recs'])
+    def get_reco_for_user(self, user_id: int, k_recs: int, **kwargs) -> List[int]:
+        random.seed(user_id)
+        return random.sample(range(0, 256), k_recs)
 
 
 all_models: Dict[str, Type[RecModel]] = {
