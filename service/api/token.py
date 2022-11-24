@@ -7,7 +7,7 @@ from service.api.exceptions import NonAuthorizedError
 
 security = HTTPBearer()
 
-SECRET_KEY = os.getenv('SECRET_KEY', '000000')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 async def has_access(
