@@ -59,7 +59,7 @@ lint: isort flake mypy pylint
 # Test
 
 .pytest:
-	pytest
+	SECRET_KEY=THIS_IS_SECRET pytest
 
 test: .venv .pytest
 
