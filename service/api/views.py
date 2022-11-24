@@ -47,9 +47,9 @@ async def health() -> str:
                401: {'model': Error401Response}}
 )
 async def get_reco(
-        request: Request,
-        model_name: str = Path(..., description='The name of testing model'),
-        user_id: int = Path(..., description='The specific id of user'),
+    request: Request,
+    model_name: str = Path(..., description='The name of testing model'),
+    user_id: int = Path(..., description='The specific id of user'),
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
