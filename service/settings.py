@@ -23,6 +23,7 @@ class LogConfig(Config):
 class ServiceConfig(Config):
     service_name: str = "reco_service"
     k_recs: int = 10
+    SECRET_KEY: str
 
     log_config: LogConfig
 
