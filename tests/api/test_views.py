@@ -1,3 +1,4 @@
+import os
 from http import HTTPStatus
 
 from starlette.testclient import TestClient
@@ -5,16 +6,14 @@ from starlette.testclient import TestClient
 from service.settings import ServiceConfig
 
 GET_RECO_PATH = "/reco/{model_name}/{user_id}"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 def test_health(
     client: TestClient,
 ) -> None:
     with client:
-        headers = {
-            'Authorization': 'Bearer 000000'
-        }
-        response = client.get("/health", headers=headers)
+        response = client.get("/health")
     assert response.status_code == HTTPStatus.OK
 
 
@@ -24,9 +23,10 @@ def test_get_reco_success(
 ) -> None:
     user_id = 123
     path = GET_RECO_PATH.format(model_name="random_model", user_id=user_id)
+    print(f'THIS IS SECRET_KEY: {SECRET_KEY}')
     with client:
         headers = {
-            'Authorization': 'Bearer 000000'
+            'Authorization': f'Bearer {SECRET_KEY}'
         }
         response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.OK
@@ -43,7 +43,7 @@ def test_get_reco_for_unknown_user(
     path = GET_RECO_PATH.format(model_name="random_model", user_id=user_id)
     with client:
         headers = {
-            'Authorization': 'Bearer 000000'
+            'Authorization': f'Bearer {SECRET_KEY}'
         }
         response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -57,7 +57,7 @@ def test_get_reco_for_unknow_model(
     path = GET_RECO_PATH.format(model_name="unknow_model", user_id=user_id)
     with client:
         headers = {
-            'Authorization': 'Bearer 000000'
+            'Authorization': f'Bearer {SECRET_KEY}'
         }
         response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -71,7 +71,7 @@ def test_get_reco_for_unauthtorize(
     path = GET_RECO_PATH.format(model_name="unknow_model", user_id=user_id)
     with client:
         headers = {
-            'Authorization': 'Bearer 8888ffff8'
+            'Authorization': 'Bearer NOT_VALID_SECRET_KEY'
         }
         response = client.get(path, headers=headers)
     assert response.status_code == HTTPStatus.UNAUTHORIZED
