@@ -19,7 +19,6 @@ uvicorn = "^0.14.0"
 orjson = "^3.7.7"
 starlette = "^0.14.2"
 python-jose = "^3.3.0"
-jupyter = "^1.0.0"
 pandas = "^1.5.2"
 
 [tool.poetry.dev-dependencies]
@@ -30,6 +29,7 @@ isort = "^5.8.0"
 bandit = "^1.7.0"
 flake8 = "^3.9.2"
 pylint = "~2.8.3"
+jupyter = "^1.0.0"
 
 [build-system]
 requires = ["poetry>=1.0.5"]
