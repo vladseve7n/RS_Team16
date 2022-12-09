@@ -72,6 +72,10 @@ build:
 run: build
 	docker run -p 8080:8080 --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
+# jupyter
+jup:
+	jupyter notebook
+
 # All
 
 all: setup format lint test run

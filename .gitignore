@@ -67,3 +67,10 @@ venv.bak/
 .mypy_cache/
 
 
+/HW_3_notebooks/knn_models_offline/
+/HW_3_notebooks/knn_models/
+/HW_3_notebooks/pop_models/
+/HW_3_notebooks/data/
+/HW_3_notebooks/kion_train/
+/HW_3_notebooks/rectools_datasets/
+/HW_3_notebooks/pop_models_offline/
