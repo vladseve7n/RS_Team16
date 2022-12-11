@@ -3,6 +3,10 @@ import random
 from abc import ABC, abstractmethod
 from typing import List
 
+from service.settings import get_config
+
+service_config = get_config()
+
 
 class RecModel(ABC):
     def __init__(self) -> None:
@@ -34,40 +38,44 @@ class RandomModel(RecModel):
         return random.sample(range(0, 256), k_recs)
 
 
-class UserKnnBM25Offline(RecModel):
+class ItemKNNBM25Offline(RecModel):
+    path_to_weights: str = service_config.bm25_itemknn_offline_path
 
     def __init__(self) -> None:
         super().__init__()
-        with open('saved_models/bm25_itemknn_offline.json', 'r') as handle:
-            self.json_with_recos = json.load(handle)
+        with open(self.path_to_weights, 'r') as handle:
+            self.recos = json.load(handle)
+            self.recos = {int(k): v for k, v in self.recos.items()}
 
     def prepare(self) -> None:
         pass
 
     def get_reco_for_user(self, user_id: int, k_recs: int) -> List[int]:
-        if str(user_id) not in self.json_with_recos:
-            return []
-        return self.json_with_recos[str(user_id)]
+        return self.recos.get(user_id, [])
 
 
 class PopRecoModelOffline(RecModel):
+    path_to_weights: str = service_config.pop_sum_weight_offline_path
+    path_to_default_answer: str = service_config.pop_default_answer_path
+
     def __init__(self) -> None:
         super().__init__()
-        with open('saved_models/pop_sum_weight_offline.json', 'r') as handle:
-            self.json_with_recos = json.load(handle)
+        with open(self.path_to_weights, 'r') as handle:
+            self.recos = json.load(handle)
+            self.recos = {int(k): v for k, v in self.recos.items()}
+
+        with open(self.path_to_default_answer, 'r') as handle:
+            self.default_answer = json.load(handle)['default']
 
     def prepare(self) -> None:
         pass
 
     def get_reco_for_user(self, user_id: int, k_recs: int) -> List[int]:
-        if str(user_id) not in self.json_with_recos:
-            return [10440, 15297, 4151, 6192, 14,
-                    13865, 9728, 9996, 16228, 496]
-        return self.json_with_recos[str(user_id)][:k_recs]
+        return self.recos.get(user_id, self.default_answer)[:k_recs]
 
 
 all_models = {
     'random_model': RandomModel(),
-    'user_knn_bm25_offline': UserKnnBM25Offline(),
+    'user_knn_bm25_offline': ItemKNNBM25Offline(),
     'pop_reco_model_offline': PopRecoModelOffline()
 }
