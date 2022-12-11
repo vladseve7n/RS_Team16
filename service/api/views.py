@@ -69,7 +69,7 @@ async def get_reco(
 
     if len(reco) < k_recs:
         pop_model = all_models['pop_reco_model_offline']
-        pop_recos = pop_model.get_reco_for_user(user_id=user_id)
+        pop_recos = pop_model.get_reco_for_user(user_id=user_id, k_recs=None)
         reco.extend(pop_recos)
         reco = list(dict.fromkeys(reco))
         reco = reco[:k_recs]
