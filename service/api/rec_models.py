@@ -70,8 +70,10 @@ class PopRecoModelOffline(RecModel):
     def prepare(self) -> None:
         pass
 
-    def get_reco_for_user(self, user_id: int, k_recs: int) -> List[int]:
-        return self.recos.get(user_id, self.default_answer)[:k_recs]
+    def get_reco_for_user(self, user_id: int, k_recs: int = None) -> List[int]:
+        if k_recs:
+            return self.recos.get(user_id, self.default_answer)[:k_recs]
+        return self.recos.get(user_id, self.default_answer)
 
 
 all_models = {
