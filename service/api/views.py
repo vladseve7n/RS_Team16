@@ -59,13 +59,21 @@ async def get_reco(
     k_recs = request.app.state.k_recs
 
     try:
-        model = all_models[model_name]()
+        model = all_models[model_name]
     except KeyError:
         raise ModelNotFoundError(
             error_message=f'There is no model with name {model_name}')
 
     model.prepare()
     reco = model.get_reco_for_user(user_id=user_id, k_recs=k_recs)
+
+    if len(reco) < k_recs:
+        pop_model = all_models['pop_reco_model_offline']
+        pop_recos = pop_model.get_reco_for_user(user_id=user_id, k_recs=None)
+        reco.extend(pop_recos)
+        reco = list(dict.fromkeys(reco))
+        reco = reco[:k_recs]
+
     return RecoResponse(user_id=user_id, items=reco)
 
 

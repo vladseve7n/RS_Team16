@@ -24,6 +24,10 @@ class ServiceConfig(Config):
     service_name: str = "reco_service"
     k_recs: int = 10
     SECRET_KEY: str
+    bm25_itemknn_offline_path: str = 'saved_models/bm25_itemknn_offline.json'
+    pop_sum_weight_offline_path: str = 'saved_models/' \
+                                       'pop_sum_weight_offline.json'
+    pop_default_answer_path: str = 'saved_models/pop_default_answer.json'
 
     log_config: LogConfig
 
