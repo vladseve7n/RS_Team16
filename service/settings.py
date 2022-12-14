@@ -28,7 +28,7 @@ class ServiceConfig(Config):
     pop_sum_weight_offline_path: str = 'saved_models/' \
                                        'pop_sum_weight_offline.json'
     pop_default_answer_path: str = 'saved_models/pop_default_answer.json'
-    
+
     ann_recs_json: str = 'saved_models/ann_recs.json'
 
     log_config: LogConfig

@@ -75,24 +75,14 @@ class PopRecoModelOffline(RecModel):
             return self.recos.get(user_id, self.default_answer)[:k_recs]
         return self.recos.get(user_id, self.default_answer)
 
-class AnnRecoMidelOffline(RecModel):
+
+class AnnRecoMidelOffline(ItemKNNBM25Offline):
     path_to_weights: str = service_config.ann_recs_json
 
-    def __init__(self) -> None:
-        super().__init__()
-        with open(self.path_to_weights, 'r') as handle:
-            self.recos = json.load(handle)
-            self.recos = {int(k): v for k, v in self.recos.items()}
-
-    def prepare(self) -> None:
-        pass
-
-    def get_reco_for_user(self, user_id: int, k_recs: int) -> List[int]:
-        return self.recos.get(user_id, [])
 
 all_models = {
     'random_model': RandomModel(),
     'user_knn_bm25_offline': ItemKNNBM25Offline(),
     'pop_reco_model_offline': PopRecoModelOffline(),
-    'ann_recs_offline' : AnnRecoMidelOffline() 
+    'ann_recs_offline': AnnRecoMidelOffline()
 }
