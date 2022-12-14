@@ -76,8 +76,13 @@ class PopRecoModelOffline(RecModel):
         return self.recos.get(user_id, self.default_answer)
 
 
+class AnnRecoMidelOffline(ItemKNNBM25Offline):
+    path_to_weights: str = service_config.ann_recs_json
+
+
 all_models = {
     'random_model': RandomModel(),
     'user_knn_bm25_offline': ItemKNNBM25Offline(),
-    'pop_reco_model_offline': PopRecoModelOffline()
+    'pop_reco_model_offline': PopRecoModelOffline(),
+    'ann_recs_offline': AnnRecoMidelOffline()
 }
